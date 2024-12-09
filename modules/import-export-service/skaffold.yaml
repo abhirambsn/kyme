@@ -1,0 +1,12 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+metadata:
+  name: import-export-service
+build:
+  artifacts:
+    - image: skaffold-jib
+      jib:
+        project: com.abhirambsn:import-export-service
+manifests:
+  rawYaml:
+    - k8s/depolyment.yaml

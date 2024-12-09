@@ -28,6 +28,7 @@
     </scm>
     <properties>
         <java.version>21</java.version>
+        <image.path>ghcr.io/abhirambsn/kyme-import-export-service</image.path>
     </properties>
     <dependencies>
         <dependency>
@@ -105,6 +106,43 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.4</version>
+                <configuration>
+                    <from>
+                        <image>eclipse-temurin:21-alpine</image>
+                        <platforms>
+                            <platform>
+                                <architecture>amd64</architecture>
+                                <os>linux</os>
+                            </platform>
+                            <platform>
+                                <architecture>arm64</architecture>
+                                <os>linux</os>
+                            </platform>
+                        </platforms>
+                    </from>
+                    <to>
+                        <image>${image.path}</image>
+                        <auth>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <username>${env.GITHUB_USERNAME}</username>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <password>${env.GITHUB_PASSWORD}</password>
+                        </auth>
+                    </to>
+                    <container>
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+                        <labels>
+                            <org.opencontainers.image.source>https://github.com/abhirambsn/kyme</org.opencontainers.image.source>
+                        </labels>
+                    </container>
                 </configuration>
             </plugin>
         </plugins>
